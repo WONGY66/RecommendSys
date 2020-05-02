@@ -1,3 +1,4 @@
+```{r}
 apikey <- "Your Key"
 
 base_url <- "https://api.nytimes.com/svc/books/v3/lists/current/paperback-nonfiction.json"
@@ -5,3 +6,4 @@ library("httr")
 r <- GET(base_url, query = list("api-key" = apikey))
 
 json <- content(r, "parsed")
+```
