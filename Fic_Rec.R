@@ -1,0 +1,65 @@
+library(readr)
+
+book <- suppressWarnings(read_csv(
+  "~/fiction.csv", na = "NULL"))
+
+book <- book %>% select(6,7,10)
+book <- unique(book)
+
+# now we find a book i like
+fic <- which(book$title == "DREAMING SPIES")
+book[fic,]
+
+# pre-process the data
+bcorp <- corpus(book, text_field = "description") #Highlighting the plot
+docnames(bcorp) <- docvars(bcorp)$title
+bdfm <- dfm(bcorp, verbose = TRUE, remove_punct = TRUE, #data cleaning
+            remove_numbers = TRUE, remove = stopwords("english"))
+            
+
+**compute cosine similarity with respect to all other movies**
+simil <- textstat_simil(dfm_tfidf(bdfm), 
+                        selection = fic, method="cosine")
+
+simil <- order(simil@x, decreasing=T)
+head(simil, n = 5)
+
+
+set.seed(777) # set random seed to ensure replicability, we want to have a reproducable result even we have a non-deterministic data
+kc <- kmeans(bdfm, centers=10)
+table(kc$cluster)
+
+head(unique(docvars(bcorp)$title[kc$cluster==1]))
+
+head(unique(docvars(bcorp)$title[kc$cluster==2]))
+
+head(unique(docvars(bcorp)$title[kc$cluster==3]))
+
+head(unique(docvars(bcorp)$title[kc$cluster==4]))
+
+head(unique(docvars(bcorp)$title[kc$cluster==5]))
+
+
+**To check out each cluster
+# fantasy
+head(textstat_keyness(bdfm, target=kc$cluster==1),n=20)
+# WWII - France?
+head(textstat_keyness(bdfm, target=kc$cluster==2),n=20)
+# divorce?
+head(textstat_keyness(bdfm, target=kc$cluster==3),n=20)
+# medicine
+head(textstat_keyness(bdfm, target=kc$cluster==4),n=20)
+# Starwars
+head(textstat_keyness(bdfm, target=kc$cluster==5),n=20)
+#Woman?
+head(textstat_keyness(bdfm, target=kc$cluster==6),n=20)
+#America life?
+head(textstat_keyness(bdfm, target=kc$cluster==7),n=20)
+#Detective
+head(textstat_keyness(bdfm, target=kc$cluster==8),n=20)
+#FBI
+head(textstat_keyness(bdfm, target=kc$cluster==9),n=20)
+#novel
+head(textstat_keyness(bdfm, target=kc$cluster==10),n=20)
+
+
