@@ -1,3 +1,4 @@
+**For Fiction Book**
 ```{r}
 library(readr)
 
@@ -7,7 +8,7 @@ book <- suppressWarnings(read_csv(
 book <- book %>% select(6,7,10)
 book <- unique(book)
 
-# now we find a book i like
+# find a book i like
 fic <- which(book$title == "DREAMING SPIES")
 book[fic,]
 
@@ -65,3 +66,14 @@ head(textstat_keyness(bdfm, target=kc$cluster==9),n=20)
 head(textstat_keyness(bdfm, target=kc$cluster==10),n=20)
 ```
 
+**For Movie**
+```{r}
+library(readr)
+# data source: http://www.cs.cmu.edu/~ark/personas/
+movie <- read_csv(unz("movie-plots.csv.zip", "movie-plots.csv"),
+                  col_types="cccc")
+
+# find a movie i like
+scifi <- which(movie$name=="Gravity")
+movie[scifi,]
+```
