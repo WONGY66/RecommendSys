@@ -1,3 +1,4 @@
+```{r}
 library(readr)
 
 book <- suppressWarnings(read_csv(
@@ -17,7 +18,7 @@ bdfm <- dfm(bcorp, verbose = TRUE, remove_punct = TRUE, #data cleaning
             remove_numbers = TRUE, remove = stopwords("english"))
             
 
-**compute cosine similarity with respect to all other movies**
+#compute cosine similarity with respect to all other movies
 simil <- textstat_simil(dfm_tfidf(bdfm), 
                         selection = fic, method="cosine")
 
@@ -40,7 +41,8 @@ head(unique(docvars(bcorp)$title[kc$cluster==4]))
 head(unique(docvars(bcorp)$title[kc$cluster==5]))
 
 
-**To check out each cluster
+#To check out each cluster
+
 # fantasy
 head(textstat_keyness(bdfm, target=kc$cluster==1),n=20)
 # WWII - France?
@@ -61,5 +63,5 @@ head(textstat_keyness(bdfm, target=kc$cluster==8),n=20)
 head(textstat_keyness(bdfm, target=kc$cluster==9),n=20)
 #novel
 head(textstat_keyness(bdfm, target=kc$cluster==10),n=20)
-
+```
 
